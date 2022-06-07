@@ -21,13 +21,11 @@ export default function HomeScreen(props) {
     <SafeAreaView style={Styles.safeAreaView}>
       <ScrollView style={Styles.container} contentContainerStyle={Styles.contentContainer}>
         
-        <TextH1>This is the home screen</TextH1>
-
-        <TextParagraph>Here is some sample text for the home screen.</TextParagraph>
+        <TextH2>This is the home screen</TextH2>
 
         <TextParagraph>There is no place like 127.0.0.1</TextParagraph>
 
-        <TextH2>Mike wishes he was as cool as Jake</TextH2>
+        <TextH1>Mike wishes he was as cool as Jake</TextH1>
         
         <View style={{alignItems: 'center', justifyContent: 'center', marginVertical: 40}}>
           <MyButton

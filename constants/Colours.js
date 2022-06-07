@@ -1,7 +1,7 @@
 
 // Set up some colours to use in this file (consult style guide)
 const myColours = {
-  colour1:       '#008B8B',
+  colour1:       '#941a1d',
   colour2:       '#20B2AA',
   colour3:       '#1E90FF',
 }
@@ -19,4 +19,5 @@ export default {
   warningText:      '#666804',
   noticeBackground: myColours.colour2,
   noticeText:       '#fff',
+  roired:   myColours.colour1,
 };

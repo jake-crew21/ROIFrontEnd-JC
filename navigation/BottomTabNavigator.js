@@ -9,6 +9,7 @@ import Styles from "../styles/MainStyle";
 // Import navigators & screens
 import HomeScreen from '../screens/HomeScreen';
 import HelpScreen from '../screens/HelpScreen';
+import PeopleNavigator from './PeopleNavigator';
 
 
 const BottomTab = createBottomTabNavigator();
@@ -33,6 +34,14 @@ export default function BottomTabNavigator({ navigation, route }) {
         options={{
           title: 'Home',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />
+        }}
+      />
+      <BottomTab.Screen
+        name="People"
+        component={PeopleNavigator}
+        options={{
+          title: 'View People',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-people" />
         }}
       />
       <BottomTab.Screen

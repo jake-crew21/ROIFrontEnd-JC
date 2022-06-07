@@ -30,7 +30,7 @@ export default StyleSheet.create({
         marginTop: 30,
         marginBottom: 5,
         fontSize: 30,
-        color: '#008B8B',  // COLOUR: primary colour 1
+        color: Colours.roired,  // COLOUR: primary colour 1
         lineHeight: 35,
     },
     h2: {
