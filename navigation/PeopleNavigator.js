@@ -2,8 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
 // Import navigation and screens
-import NotFoundScreen from '../screens/NotFoundScreen';
-import BottomTabNavigator from './BottomTabNavigator';
+import ViewPeopleScreen from '../screens/ViewPeopleScreen';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -18,7 +17,7 @@ export default function PeopleNavigator() {
       
       <Stack.Screen 
           name="ViewPeople" 
-          component={NotFoundScreen} 
+          component={ViewPeopleScreen} 
           options={{ title: 'View All People' }} 
       />
     </Stack.Navigator>
