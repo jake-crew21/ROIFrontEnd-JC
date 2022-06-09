@@ -41,7 +41,16 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={PeopleNavigator}
         options={{
           title: 'View People',
+          unmountOnBlur: true, //reset screen when navigated away from
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-people" />
+        }}
+      />
+      <BottomTab.Screen
+        name="AddPerson"
+        component={HomeScreen}
+        options={{
+          title: 'AddPerson',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-add" />
         }}
       />
       <BottomTab.Screen

@@ -11,7 +11,7 @@ export default StyleSheet.create({
     },
     
     // GENERAL STYLES
-    
+
     container: {
         flex: 1,
         backgroundColor: '#fff',
@@ -96,6 +96,12 @@ export default StyleSheet.create({
     },
     buttonLargeText: {
         fontSize: 20,
+    },
+    personButtonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 10,
+        padding: 10,
     },
     form: {
         marginVertical: 10,

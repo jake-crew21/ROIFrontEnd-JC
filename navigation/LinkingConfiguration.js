@@ -8,6 +8,16 @@ export default {
         path: '/',
         screens: {
           Home: 'home',
+          People: {
+            path: 'People',
+            screens: {
+              Viewpeople: 'view-all',
+              ViewPerson: 'view',
+              EditPerson: 'edit',
+              AddPerson: 'add',
+            },
+          },
+          AddPerson: 'people/add',
           Help: 'help',
         },
       },
