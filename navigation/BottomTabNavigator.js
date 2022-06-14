@@ -46,8 +46,8 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
-        name="AddPerson"
-        component={HomeScreen}
+        name="view"
+        component={PeopleNavigator}
         options={{
           title: 'AddPerson',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-add" />

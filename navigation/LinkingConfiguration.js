@@ -14,7 +14,6 @@ export default {
               Viewpeople: 'view-all',
               ViewPerson: 'view',
               EditPerson: 'edit',
-              AddPerson: 'add',
             },
           },
           AddPerson: 'people/add',
