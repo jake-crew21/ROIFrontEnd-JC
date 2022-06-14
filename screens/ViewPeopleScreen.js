@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { View, ScrollView, Image } from 'react-native';
+import { View, ScrollView, Image, Pressable } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // Import helper code
 import Settings from '../constants/Settings';
-import { RoiGetPeople } from '../utils/Api';
-import { PopupOk } from '../utils/Popup';
+import { RoiDeletePerson, RoiGetPeople } from '../utils/Api';
+import { PopupOk, PopupOkCancel } from '../utils/Popup';
 
 // Import styling and components
-import { TextParagraph, TextH1 } from "../components/StyledText";
+import { TextParagraph, TextH1, TextH3, TextH2 } from "../components/StyledText";
 import Styles from "../styles/MainStyle";
 import { MyButton } from '../components/MyButton';
 
@@ -20,12 +20,15 @@ export default function ViewPeopleScreen(props) {
 
   //Set 'effect' to retieve and store data - only run on mount/unmount (loaded/unloaded)
   //'effectful' code is something the triggers a UI re-render
-  React.useEffect(ShowAddperson, [])
+  React.useEffect(refreshPersonList, [])
 
-  function ShowAddperson()
+  function showAddPerson()
   {
-    console.log("show add person....")
-    
+    props.navigation.replace('Root', {screen: 'home'});
+  }
+
+  function refreshPersonList()
+  {
     //Get data from the roi
     RoiGetPeople()
       //success
@@ -37,24 +40,32 @@ export default function ViewPeopleScreen(props) {
       .catch(error => {
         PopupOk("API Error", "Could not retrive 'people' from server")
       })
-    
   }
 
-  function RefreshPersonList()
-  {
-    console.log("Refresh page.....")
-
-    //setPeople([...people, "Mr. Extra"])
+  function showViewPerson(person) {
+    //Navigate to ViewPerson and pass through the person's id as a param
+    props.navigation.navigate('ViewPerson', {personId: person.personId})
   }
 
-  function DisplayPeople()
+  function homeScreen() {
+    props.navigation.replace('Root', {screen: 'home'});
+  }
+
+  function displayPeople()
   {
     //loop through the people that are being returned, appropriate output and then return result
     return people.map(p => {
       //create an output view for each item
       return (
-        <View>
-          <TextParagraph>{p.name}</TextParagraph>
+        <View key={p.personId} style={Styles.personListItem}>
+          
+          <Pressable onPress={() => showViewPerson(p)}>
+            <View style={Styles.personListItemDetails}>
+              <TextParagraph style={Styles.personListItemName}>{p.name}</TextParagraph>
+              <TextParagraph style={Styles.personListItemText}>{p.department?.name ?? "---"}</TextParagraph>
+              <TextParagraph style={Styles.personListItemText}>Phone: {p.phone}</TextParagraph>
+            </View>
+          </Pressable>
         </View>
       )
     })
@@ -62,34 +73,38 @@ export default function ViewPeopleScreen(props) {
 
   return (
     <SafeAreaView style={Styles.safeAreaView}>
-        <Image source = {require ('../assets/images/roi-logo.jpg')} style = {{ width: 110, height: 55 }}/>
-        <TextH1 style={{marginTop:0}}>View All People</TextH1>
-        <View style = {Styles.personButtonContainer}>
+        <View style={Styles.logoAndTitle}>
+          <Pressable onPress={homeScreen}>
+            <Image source = {require ('../assets/images/roi-logo.jpg')} style = {Styles.logoSize}/>
+          </Pressable>
+          <TextH1 style={{marginTop:0}}>Staff</TextH1>
+        </View>
+        <View style = {Styles.peopleButtonContainer}>
           
           <MyButton
             text="Add +"
             type="major"
             size="small"
             
-            onPress={ShowAddperson}
+            onPress={showAddPerson}
           />
           <MyButton
-            text="Refress"
-            type="major"
+            text="Refresh"
+            type="minor"
             size="small"
             
-            onPress={RefreshPersonList}
+            onPress={refreshPersonList}
           />
         </View>
 
 
         <ScrollView style={Styles.container} contentContainerStyle={Styles.contentContainer}>  
 
-          <View>
-            {DisplayPeople()}
+          <View style={Styles.personList}>
+            {displayPeople()}
           </View>
 
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
