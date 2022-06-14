@@ -2,7 +2,7 @@ import NetInfo from "@react-native-community/netinfo";
 import cache from "./Caching";
 
 // Root URL for the API backend
-const apiUrl = null;
+const apiUrl = 'https://localhost:7100/api';
 
 // Use caching for semi-offline operation - set high TTL (time to live)
 cache.ttlMinutes = 60;
@@ -18,7 +18,7 @@ cache.ttlMinutes = 60;
 async function getRequest(url, data = {}, returnsData = true) {
     
     // Build URL with data attached
-    url += 'https://localhost:7100/api' + new URLSearchParams(data);
+    url += new URLSearchParams(data);
     
     // Make request, wait for response
     const response = await fetch(url, {
@@ -190,8 +190,17 @@ async function handleFetchError(response) {
 /*
  * ADD YOUR API CALLING METHODS HERE
  */
-
-//Get all people
+//GET Departments
+export function RoiGetDepartments()
+{
+    //call the api end point: GET /Departments
+    return getRequest(`${apiUrl}/Departments`)
+        .then(response => {
+            //If request/response is successful, return json data
+            return response
+        })
+}
+//GET People
 export function RoiGetPeople()
 {
     //call the api end point: GET /People
@@ -199,5 +208,40 @@ export function RoiGetPeople()
         .then(response => {
             //If request/response is successful, return json data
             return response
+        })
+}
+//GET Person
+export function RoiGetPerson(id)
+{
+    return getRequest(`${apiUrl}/People/${id}`)
+        .then(response => {
+            //If request/response is successful, return json data
+            return response
+        })
+}
+//POST Person
+export function RoiAddPerson(name, phone, departmentId, street, city, state, zip, country)
+{
+    return postRequest(`${apiUrl}/People`, {name, phone, departmentId, street, city, state, zip, country})
+        .then(response => {
+            //If request/response is successful, return json data
+            return response
+        })
+}
+//PUT Person
+export function RoiUpdatePerson(id, name, phone, departmentId, street, city, state, zip, country)
+{
+    return putRequest(`${apiUrl}/People/${id}`, {id, name, phone, departmentId, street, city, state, zip, country})
+        .then(response => {
+            //If request/response is successful, return true
+            return true
+        })
+}
+//DELETE Person
+export function RoiDeletePerson(id)
+{
+    return deleteRequest(`${apiUrl}/People/${id}`, {id})
+        .then(response => {
+            return true
         })
 }

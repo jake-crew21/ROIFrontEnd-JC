@@ -1,5 +1,6 @@
 import { StyleSheet, Platform, StatusBar } from "react-native";
 import Colours from "../constants/Colours";
+import NetInfo from "@react-native-community/netinfo";
 
 export default StyleSheet.create({
 
@@ -14,7 +15,7 @@ export default StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: Colours.roiWhite,
     },
     contentContainer: {
         padding: 10,
@@ -23,7 +24,7 @@ export default StyleSheet.create({
     bodyText: {
         marginVertical: 5,
         fontSize: 17,
-        color: '#2F4F4F',  // COLOUR: dark grey
+        color: Colours.roiCharcoal,  // COLOUR: dark grey
         lineHeight: 24,
     },
     h1: {
@@ -37,14 +38,14 @@ export default StyleSheet.create({
         marginTop: 20,
         marginBottom: 5,
         fontSize: 24,
-        color: '#20B2AA',  // COLOUR: primary colour 2
+        color: Colours.roiCharcoal,  // COLOUR: primary colour 2
         lineHeight: 24,
     },
     h3: {
         marginTop: 10,
         marginBottom: 5,
         fontSize: 20,
-        color: '#778899',  // COLOUR: medium grey
+        color: Colours.roiMidGrey,  // COLOUR: medium grey
         lineHeight: 25,
     },
     listItem: {
@@ -63,7 +64,7 @@ export default StyleSheet.create({
     button: {
         paddingVertical: 13,
         paddingHorizontal: 26,
-        backgroundColor: '#778899',  // COLOUR: medium grey
+        backgroundColor: Colours.roiMidGrey,  // COLOUR: medium grey
         borderRadius: 5,
     },
     buttonText: {
@@ -72,16 +73,16 @@ export default StyleSheet.create({
         textAlign: 'center',
     },
     buttonMajor: {
-        backgroundColor: '#008B8B',  // COLOUR: primary colour 1
+        backgroundColor: Colours.roired,  // COLOUR: primary colour 1
     },
     buttonMajorText: {
         color: 'white',
     },
     buttonMinor: {
-        backgroundColor: '#C0C0C0',  // COLOUR: light grey
+        backgroundColor: Colours.roiLightGrey,  // COLOUR: light grey
     },
     buttonMinorText: {
-        color: '#2F4F4F',  // COLOUR: dark grey
+        color: Colours.roiCharcoal,  // COLOUR: dark grey
     },
     buttonSmall: {
         paddingVertical: 5,
@@ -97,12 +98,6 @@ export default StyleSheet.create({
     buttonLargeText: {
         fontSize: 20,
     },
-    personButtonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 10,
-        padding: 10,
-    },
     form: {
         marginVertical: 10,
     },
@@ -112,7 +107,7 @@ export default StyleSheet.create({
         paddingBottom: 10,
         paddingHorizontal: 15,
         borderWidth: 1,
-        borderColor: '#C0C0C0',  // COLOUR: light grey
+        borderColor: Colours.roiLightGrey,  // COLOUR: light grey
         borderRadius: 5,
     },
     legend: {
@@ -122,7 +117,7 @@ export default StyleSheet.create({
         margin: 0,
         paddingHorizontal: 5,
         paddingVertical: 0,
-        color: '#1E90FF',  // COLOUR: main secondary colour
+        color: Colours.roiBurntOrange,  // COLOUR: main secondary colour
         backgroundColor: 'white',
     },
     formRow: {
@@ -144,7 +139,7 @@ export default StyleSheet.create({
         paddingVertical: 2,
         paddingHorizontal: 4,
         borderWidth: 1,
-        borderColor: '#C0C0C0',  // COLOUR: light grey
+        borderColor: Colours.roiLightGrey,  // COLOUR: light grey
         borderRadius: 3,
     },
     picker: {
@@ -155,7 +150,7 @@ export default StyleSheet.create({
         paddingVertical: 2,
         paddingHorizontal: 4,
         borderWidth: 1,
-        borderColor: '#C0C0C0',  // COLOUR: light grey
+        borderColor: Colours.roiLightGrey,  // COLOUR: light grey
         borderRadius: 3,
     },
     pickerItem: {
@@ -168,14 +163,23 @@ export default StyleSheet.create({
         backgroundColor: 'white',
     },
     headerBarTitle: {
-        color: '#008B8B',  // COLOUR: primary colour 1
+        color: Colours.roired,  // COLOUR: primary colour 1
         textAlign: 'left',
+    },
+    logoAndTitle: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 10,
+    },
+    logoSize: {
+        width: 110, 
+        height: 63.6,
     },
 
     // FOOTER NAVIGATION
 
     navBar: {
-        backgroundColor: '#2F4F4F',  // COLOUR: dark grey
+        backgroundColor: Colours.roiCharcoal,  // COLOUR: dark grey
     },
     navBarIcon: {
         marginBottom: -5
@@ -186,10 +190,85 @@ export default StyleSheet.create({
 
     // HOME SCREEN
 
-
+    homeHeading: {
+        fontSize: 40,
+        lineHeight: 45,
+        textAlign: 'center',
+        color: Colours.roired,
+    },
+    homeHeadingContainer: {
+        alignItems: 'center',
+        marginHorizontal: 50,
+        marginBottom: 30,
+    },
+    homeBttnContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    },
+    homeBttn: {
+        flex: 1,
+        marginHorizontal: 35,
+        paddingHorizontal:10,
+        paddingVertical: 1,
+    },
+    homeLogo: {
+        width: 305, 
+        height: 159,
+        resizeMode: 'contain',
+    },
+    homeLogoContainer: {
+        alignItems: 'center',
+        marginTop: 30,
+        marginBottom: 30,
+        justifyContent: 'center',
+    },
 
     // HELP SCREEN
 
-    
-    
+    // View People Screen
+    peopleButtonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 10,
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: Colours.roiCharcoal,
+    },
+    personList: {
+
+    },
+    personListItem: {
+        flexDirection: 'row',
+        paddingVertical: 15,
+        paddingHorizontal: 5,
+        borderBottomWidth: 2,
+        borderBottomColor: Colours.roiLightGrey,
+    },
+    personListItemDetails: {
+        flex: 1,
+    },
+    personListItemName: {
+        fontSize: 22,
+        marginTop: 2,
+    },
+    personListItemText: {
+        fontSize: 15,
+        marginVertical: 1,
+        marginLeft: 10,
+    },
+    personListItemBttns: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignContent: 'space-between',
+        marginBottom: 10,
+        padding: 10,
+    },
+    personListItembttn: {
+        marginVertical: 2,
+        paddingTop: 5,
+        paddingBottom: 5,
+    },
+    personListItembttnText: {},
+    //View Person Screen
+
 });
