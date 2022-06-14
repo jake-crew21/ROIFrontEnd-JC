@@ -16,26 +16,36 @@ export default function HomeScreen(props) {
   function showHelp() {
     props.navigation.replace('Root', {screen: 'Help'});
   }
+  function showViewPeople() {
+    props.navigation.replace('Root', {screen: 'People'});
+  }
 
   return (
     <SafeAreaView style={Styles.safeAreaView}>
-      <ScrollView style={Styles.container} contentContainerStyle={Styles.contentContainer}>
+        <View style={Styles.homeLogoContainer}>
+          <Image source = {require ('../assets/images/roi-logo.jpg')} style = {Styles.homeLogo}/>
+        </View>
         
-        <TextH2>This is the home screen</TextH2>
+        <View style={Styles.homeHeadingContainer}>
+          <Text style={Styles.homeHeading}>ROI HR Management System</Text>
+        </View>
 
-        <TextParagraph>There is no place like 127.0.0.1</TextParagraph>
-
-        <TextH1>Mike wishes he was as cool as Jake</TextH1>
-        
-        <View style={{alignItems: 'center', justifyContent: 'center', marginVertical: 40}}>
+        <View style={Styles.homeBttnContainer}>
           <MyButton
-            text="Show help screen"
+            text="View People"
             type="major"    // default*|major|minor
             size="large"      // small|medium*|large
+            buttonStyle={Styles.homeBttn}
+            onPress={showViewPeople}
+          />
+          <MyButton
+            text="Help"
+            type="default"    // default*|major|minor
+            size="large"      // small|medium*|large
+            buttonStyle={Styles.homeBttn}
             onPress={showHelp}
           />
         </View>
-      </ScrollView>
     </SafeAreaView>
   );
 }
