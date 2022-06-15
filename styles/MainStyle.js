@@ -267,6 +267,4 @@ export default StyleSheet.create({
         width: `${(Dimensions.get('screen').width)}px`,
     },
     personListItembttnText: {},
-    //View Person Screen
-
 });

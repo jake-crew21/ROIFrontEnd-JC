@@ -190,7 +190,11 @@ async function handleFetchError(response) {
 /*
  * ADD YOUR API CALLING METHODS HERE
  */
-//GET Departments
+
+/**
+ * GET Departments from API
+ * @returns all Departments
+ */
 export function RoiGetDepartments()
 {
     //call the api end point: GET /Departments
@@ -200,7 +204,10 @@ export function RoiGetDepartments()
             return response
         })
 }
-//GET People
+/**
+ * GET People from API
+ * @returns all People 
+ */
 export function RoiGetPeople()
 {
     //call the api end point: GET /People
@@ -210,7 +217,11 @@ export function RoiGetPeople()
             return response
         })
 }
-//GET Person
+/**
+ * GET Person
+ * @param {Int} id 
+ * @returns a person from People Table 
+ */
 export function RoiGetPerson(id)
 {
     return getRequest(`${apiUrl}/People/${id}`)
@@ -219,7 +230,18 @@ export function RoiGetPerson(id)
             return response
         })
 }
-//POST Person
+/**
+ * POST Person
+ * @param {String} name 
+ * @param {String} phone 
+ * @param {Int} departmentId 
+ * @param {String} street 
+ * @param {String} city 
+ * @param {String} state 
+ * @param {String} zip 
+ * @param {String} country 
+ * @returns data sent to API
+ */
 export function RoiAddPerson(name, phone, departmentId, street, city, state, zip, country)
 {
     return postRequest(`${apiUrl}/People`, {name, phone, departmentId, street, city, state, zip, country})
@@ -228,7 +250,19 @@ export function RoiAddPerson(name, phone, departmentId, street, city, state, zip
             return response
         })
 }
-//PUT Person
+/**
+ * PUT Person
+ * @param {Int} personId 
+ * @param {String} name 
+ * @param {String} phone 
+ * @param {Int} departmentId 
+ * @param {String} street 
+ * @param {String} city 
+ * @param {String} state 
+ * @param {String} zip 
+ * @param {String} country 
+ * @returns no data when the API is updated
+ */
 export function RoiUpdatePerson(personId, name, phone, departmentId, street, city, state, zip, country)
 {
     return putRequest(`${apiUrl}/People/${personId}`, { personId, name, phone, departmentId, street, city, state, zip, country})
@@ -237,7 +271,11 @@ export function RoiUpdatePerson(personId, name, phone, departmentId, street, cit
             return true
         })
 }
-//DELETE Person
+/**
+ * DELETE Person
+ * @param {Int} id 
+ * @returns no data when a Person is removed from the API
+ */
 export function RoiDeletePerson(id)
 {
     return deleteRequest(`${apiUrl}/People/${id}`, {id})

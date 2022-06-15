@@ -25,17 +25,19 @@ export default function PeopleNavigator() {
         headerStyle: Styles.headerBar,
         headerTitleStyle: Styles.headerBarTitle 
       }}>
-      
+      {/* ViewPeopleScreen Navi */}
       <Stack.Screen 
           name="ViewPeople" 
           component={ViewPeopleScreen} 
           options={{ title: 'View All People' }} 
       />
+      {/* ViewPersonScreen Navi */}
       <Stack.Screen 
           name="ViewPerson" 
           component={ViewPersonScreen} 
           options={{ title: 'View Person' }} 
       />
+      {/* EditPersonScreen Navi */}
       <Stack.Screen 
           name="EditPerson" 
           component={EditPersonScreen} 

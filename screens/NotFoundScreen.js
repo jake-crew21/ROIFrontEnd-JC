@@ -3,7 +3,6 @@ import { View, ScrollView } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // Import helper code
-import Settings from '../constants/Settings';
 
 // Import styling and components
 import { TextParagraph, TextH1 } from "../components/StyledText";

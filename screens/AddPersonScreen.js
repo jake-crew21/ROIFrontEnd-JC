@@ -3,15 +3,13 @@ import { View, ScrollView, Image, Pressable, TextInput, Picker } from 'react-nat
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // Import helper code
-import Settings from '../constants/Settings';
-import { RoiAddPerson, RoiDeletePerson, RoiGetDepartments, RoiGetPeople, RoiGetPerson, RoiUpdatePerson } from '../utils/Api';
-import { PopupOk, PopupOkCancel } from '../utils/Popup';
+import { RoiAddPerson, RoiGetDepartments } from '../utils/Api';
+import { PopupOk } from '../utils/Popup';
 
 // Import styling and components
-import { TextParagraph, TextH1, TextH3, TextH2, TextLabel } from "../components/StyledText";
+import { TextParagraph, TextH1, TextLabel } from "../components/StyledText";
 import Styles from "../styles/MainStyle";
 import { MyButton } from '../components/MyButton';
-
 
 export default function AddPersonScreen(props) {
 
@@ -24,13 +22,15 @@ export default function AddPersonScreen(props) {
   const [state, setState] = React.useState("")
   const [zip, setZip] = React.useState("")
   const [country, setCountry] = React.useState("")
-
+  //State - date for department picker
   const [departments, setDepartments] = React.useState([])
   
   //Set 'effect' to retieve and store data - only run on mount/unmount (loaded/unloaded)
   //'effectful' code is something the triggers a UI re-render
   React.useEffect(refreshDepartments, [])
-
+  /**
+   * Gets Departments data and passes it to [departments, setDepartments] state
+   */
   function refreshDepartments()
   {
     //Get data from the roi
@@ -45,17 +45,22 @@ export default function AddPersonScreen(props) {
         PopupOk("API Error", "Could not retrive 'departments' from server")
       })
   }
-
+  /**
+   * Navigate to ViewPeopleScreen
+   */
   function showViewPeople()
   {
     props.navigation.replace("Root", {screen: "People"})
   }
-  
-
+  /**
+   * Navigate to HomeScreen
+   */
   function homeScreen() {
     props.navigation.replace('Root', {screen: 'home'});
   }
-
+  /**
+   * Adds new person to the People Table
+   */
   function addPerson() {
     RoiAddPerson(name, phone, departmentId, street, city, state, zip, country)
       .then(data => {
@@ -67,7 +72,10 @@ export default function AddPersonScreen(props) {
       })
       
   }
-
+  /**
+   * loops through all departments 
+   * @returns each department name as a picker item
+   */
   function displayDepartment() {
     return departments.map(d =>{
       return (
@@ -86,7 +94,7 @@ export default function AddPersonScreen(props) {
         </View>
 
         <ScrollView style={Styles.container} contentContainerStyle={Styles.contentContainer}>  
-
+          {/* Display editable fields */}
           <View style={Styles.form}>
             {/* Details */}
             <View style={Styles.fieldSet}>
@@ -101,7 +109,6 @@ export default function AddPersonScreen(props) {
               </View>
               <View style={Styles.formRow}>
                 <TextLabel>Department:</TextLabel>
-                {/* <TextInput value={departmentId} onChangeText={setDepartmentId} style={Styles.textInput}></TextInput> */}
                 <Picker
                   selectedValue={departmentId}
                   onValueChange={setDepartmentId}

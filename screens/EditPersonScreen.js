@@ -26,15 +26,15 @@ export default function EditPersonScreen(props) {
   const [state, setState] = React.useState("")
   const [zip, setZip] = React.useState("")
   const [country, setCountry] = React.useState("")
-
+  //State - date for department picker
   const [departments, setDepartments] = React.useState([])
-
-  React.useEffect(refreshDepartments, [])
-  
   //Set 'effect' to retieve and store data - only run on mount/unmount (loaded/unloaded)
   //'effectful' code is something the triggers a UI re-render
+  React.useEffect(refreshDepartments, [])
   React.useEffect(refreshPerson, [])
-
+  /**
+   * Gets Departments data and passes it to [departments, setDepartments] state
+   */
   function refreshDepartments()
   {
     //Get data from the roi
@@ -49,12 +49,16 @@ export default function EditPersonScreen(props) {
         PopupOk("API Error", "Could not retrive 'departments' from server")
       })
   }
-
+  /**
+   * Navigate to ViewPeopleScreen
+   */
   function showViewPeople()
   {
     props.navigation.replace("Root", {screen: "People"})
   }
-  
+  /**
+   * Gets the Person data by refering to the personId from the previous screen
+   */
   function refreshPerson()
   {
     //GET the personId passed to this screen (via props)
@@ -86,16 +90,21 @@ export default function EditPersonScreen(props) {
         showViewPeople()
       })
   }
-
+  /**
+   * Navigate to HomeScreen
+   */
   function homeScreen() {
     props.navigation.replace('Root', {screen: 'home'});
   }
-
+  /**
+   * Navigate to ViePerson and pass through the person's id as a param
+   */
   function showViewPerson() {
-    //Navigate to ViePerson and pass through the person's id as a param
     props.navigation.navigate('ViewPerson', {personId: personId})
   }
-
+  /**
+   * Updates the person data with the personId as verification
+   */
   function savePerson() {
     RoiUpdatePerson(personId, name, phone, departmentId, street, city, state, zip, country)
       .then(data => {
@@ -104,9 +113,11 @@ export default function EditPersonScreen(props) {
       .catch(error => {
         PopupOk("Error", error)
       })
-      
   }
-
+  /**
+   * loops through all departments 
+   * @returns each department name as a picker item
+   */
   function displayDepartment() {
     return departments.map(d =>{
       return (
@@ -125,7 +136,7 @@ export default function EditPersonScreen(props) {
         </View>
 
         <ScrollView style={Styles.container} contentContainerStyle={Styles.contentContainer}>  
-
+          {/* Display editable fields, populated with the current values for each field */}
           <View style={Styles.form}>
             {/* Details */}
             <View style={Styles.fieldSet}>
@@ -144,7 +155,6 @@ export default function EditPersonScreen(props) {
               </View>
               <View style={Styles.formRow}>
                 <TextLabel>Department:</TextLabel>
-                {/* <TextInput value={departmentId} onChangeText={setDepartmentId} style={Styles.textInput}></TextInput> */}
                 <Picker
                   selectedValue={departmentId}
                   onValueChange={setDepartmentId}

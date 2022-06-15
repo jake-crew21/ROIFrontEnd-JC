@@ -29,6 +29,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         tabBarLabelStyle: Styles.navBarLabel,
       }}
     >
+      {/* HomeScreen Navi */}
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
@@ -37,6 +38,7 @@ export default function BottomTabNavigator({ navigation, route }) {
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />
         }}
       />
+      {/* People Navi for ViewPeople, ViewPerson and EditPerson */}
       <BottomTab.Screen
         name="People"
         component={PeopleNavigator}
@@ -46,6 +48,7 @@ export default function BottomTabNavigator({ navigation, route }) {
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-people" />
         }}
       />
+      {/* AddPersonScreen Navi */}
       <BottomTab.Screen
         name="Add"
         component={AddPersonScreen}
@@ -54,6 +57,7 @@ export default function BottomTabNavigator({ navigation, route }) {
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-add" />
         }}
       />
+      {/* HelpScreen Navi */}
       <BottomTab.Screen
         name="Help"
         component={HelpScreen}

@@ -3,12 +3,11 @@ import { View, ScrollView, Image, Pressable } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // Import helper code
-import Settings from '../constants/Settings';
-import { RoiDeletePerson, RoiGetPeople, RoiGetPerson } from '../utils/Api';
+import { RoiDeletePerson, RoiGetPerson } from '../utils/Api';
 import { PopupOk, PopupOkCancel } from '../utils/Popup';
 
 // Import styling and components
-import { TextParagraph, TextH1, TextH3, TextH2, TextLabel } from "../components/StyledText";
+import { TextParagraph, TextH1, TextLabel } from "../components/StyledText";
 import Styles from "../styles/MainStyle";
 import { MyButton } from '../components/MyButton';
 
@@ -35,18 +34,23 @@ export default function ViewPersonScreen(props) {
   //Set 'effect' to retieve and store data - only run on mount/unmount (loaded/unloaded)
   //'effectful' code is something the triggers a UI re-render
   React.useEffect(refreshPerson, [])
-
+  /**
+   * Navigate to EditPersonScreen and pass through the person's id as a param
+   */
   function showEditPerson()
   {
-    //Navigate to EditPerson and pass through the person's id as a param
     props.navigation.navigate('EditPerson', {personId: person.personId})
   }
-
+  /**
+   * Navigate to ViewPeopleScreen
+   */
   function showViewPeople()
   {
     props.navigation.replace("Root", {screen: "People"})
   }
-  
+  /**
+   * Gets the Person data by refering to the personId from the previous screen
+   */
   function refreshPerson()
   {
     //GET the personId passed to this screen (via props)
@@ -67,11 +71,16 @@ export default function ViewPersonScreen(props) {
         props.navigation.navigate("ViewPeople")
       })
   }
-
+  /**
+   * Navigate to HomeScreen
+   */
   function homeScreen() {
     props.navigation.replace('Root', {screen: 'home'});
   }
-
+  /**
+   * Deletes person selected by personId from the data previously gotten from the API
+   * after confirming with user
+   */
   function deletePerson() {
     //check if person should be deleted (confirm with user)
     PopupOkCancel(
@@ -109,25 +118,24 @@ export default function ViewPersonScreen(props) {
           <TextH1 style={{marginTop:0}}>{person.name}</TextH1>
         </View>
         <View style = {Styles.peopleButtonContainer}>
+          {/* Button to navigate to EditScreen */}
           <MyButton
             text="Edit"
             type="major"
             size="medium"
-            
             onPress={showEditPerson}
             />
+            {/* Button to refresh ViewPerson */}
           <MyButton
             text="Refresh"
             type="default"
             size="Medium"
-            
             onPress={refreshPerson}
             />
         </View>
 
-
         <ScrollView style={Styles.container} contentContainerStyle={Styles.contentContainer}>  
-
+          {/* ViewPerson data gotten from the API */}
           <View style={Styles.form}>
             {/* Details */}
             <View style={Styles.fieldSet}>
@@ -166,17 +174,16 @@ export default function ViewPersonScreen(props) {
               </View>
             </View>
             {/* Delete Button */}
-            <View>
-              <MyButton
-              text="Delete"
-              type="default"
-              size="small"
-              buttonText={Styles.personListItembttnText}
-              onPress={deletePerson}
-              />
-            </View>
           </View>
-
+          <View>
+            <MyButton
+            text="Delete"
+            type="default"
+            size="small"
+            buttonText={Styles.personListItembttnText}
+            onPress={deletePerson}
+            />
+          </View>
       </ScrollView>
     </SafeAreaView>
   );

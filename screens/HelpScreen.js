@@ -2,13 +2,9 @@ import * as React from 'react';
 import { View, ScrollView, Pressable, Image } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// Import helper code
-import Settings from '../constants/Settings';
-
 // Import styling and components
-import { TextParagraph, TextH1, TextH2, TextH3, TextListItem } from "../components/StyledText";
+import { TextParagraph, TextH1, TextH2 } from "../components/StyledText";
 import Styles from "../styles/MainStyle";
-import Colours from '../constants/Colours';
 
 export default function HelpScreen(props) {
 
