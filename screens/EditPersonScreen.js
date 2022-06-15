@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 // Import helper code
 import Settings from '../constants/Settings';
-import { RoiDeletePerson, RoiGetPeople, RoiGetPerson } from '../utils/Api';
+import { RoiDeletePerson, RoiGetDepartments, RoiGetPeople, RoiGetPerson, RoiUpdatePerson } from '../utils/Api';
 import { PopupOk, PopupOkCancel } from '../utils/Popup';
 
 // Import styling and components
@@ -26,10 +26,29 @@ export default function EditPersonScreen(props) {
   const [state, setState] = React.useState("")
   const [zip, setZip] = React.useState("")
   const [country, setCountry] = React.useState("")
+
+  const [departments, setDepartments] = React.useState([])
+
+  React.useEffect(refreshDepartments, [])
   
   //Set 'effect' to retieve and store data - only run on mount/unmount (loaded/unloaded)
   //'effectful' code is something the triggers a UI re-render
   React.useEffect(refreshPerson, [])
+
+  function refreshDepartments()
+  {
+    //Get data from the roi
+    RoiGetDepartments()
+      //success
+      .then(data => {
+        //storing results in state var
+        setDepartments(data)
+      })
+      //error
+      .catch(error => {
+        PopupOk("API Error", "Could not retrive 'departments' from server")
+      })
+  }
 
   function showViewPeople()
   {
@@ -53,7 +72,7 @@ export default function EditPersonScreen(props) {
           setName(p.name)
           setNameOg(p.name)
           setPhone(p.phone)
-          setDepartmentId(p.departmentId)
+          setDepartmentId(p.departmentId ?? 0)
           setStreet(p.street)
           setCity(p.city)
           setState(p.state)
@@ -78,8 +97,22 @@ export default function EditPersonScreen(props) {
   }
 
   function savePerson() {
-    console.log("Changes saved")
-    //showViewPerson()
+    RoiUpdatePerson(personId, name, phone, departmentId, street, city, state, zip, country)
+      .then(data => {
+        showViewPeople()
+      })
+      .catch(error => {
+        PopupOk("Error", error)
+      })
+      
+  }
+
+  function displayDepartment() {
+    return departments.map(d =>{
+      return (
+        <Picker.Item key={d.departmentId} label={d.name} value={d.departmentId}/>
+      )
+    })
   }
   //Main output
   return (
@@ -112,14 +145,21 @@ export default function EditPersonScreen(props) {
               <View style={Styles.formRow}>
                 <TextLabel>Department:</TextLabel>
                 {/* <TextInput value={departmentId} onChangeText={setDepartmentId} style={Styles.textInput}></TextInput> */}
-                
+                <Picker
+                  selectedValue={departmentId}
+                  onValueChange={setDepartmentId}
+                  style = {Styles.picker}
+                  itemstyle={Styles.pickerItem}
+                >
+                  {displayDepartment()}
+                </Picker>
               </View>
             </View>
             {/* Address */}
             <View style={Styles.fieldSet}>
               <TextParagraph style={Styles.legend}>Address</TextParagraph>
               <View style={Styles.formRow}>
-                <TextLabel>Phone:</TextLabel>
+                <TextLabel>Street:</TextLabel>
                 <TextInput value={street} onChangeText={setStreet} style={Styles.textInput}></TextInput>
               </View>
               <View style={Styles.formRow}>
@@ -145,7 +185,6 @@ export default function EditPersonScreen(props) {
               text="Save"
               type="major"
               size="medium"
-              ButtonStyle={Styles.personListItembttn}
               buttonText={Styles.personListItembttnText}
               onPress={savePerson}
               />
@@ -153,7 +192,6 @@ export default function EditPersonScreen(props) {
               text="Cancel"
               type="default"
               size="medium"
-              ButtonStyle={Styles.personListItembttn}
               buttonText={Styles.personListItembttnText}
               onPress={showViewPerson}
               />
