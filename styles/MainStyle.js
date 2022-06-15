@@ -1,4 +1,4 @@
-import { StyleSheet, Platform, StatusBar } from "react-native";
+import { StyleSheet, Platform, StatusBar, Dimensions } from "react-native";
 import Colours from "../constants/Colours";
 import NetInfo from "@react-native-community/netinfo";
 
@@ -263,10 +263,8 @@ export default StyleSheet.create({
         marginBottom: 10,
         padding: 10,
     },
-    personListItembttn: {
-        marginVertical: 2,
-        paddingTop: 5,
-        paddingBottom: 5,
+    personListBttn: {
+        width: `${(Dimensions.get('screen').width)}px`,
     },
     personListItembttnText: {},
     //View Person Screen

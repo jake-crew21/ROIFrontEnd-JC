@@ -149,10 +149,6 @@ export default function ViewPersonScreen(props) {
             <View style={Styles.fieldSet}>
               <TextParagraph style={Styles.legend}>Address</TextParagraph>
               <View style={Styles.formRow}>
-                <TextLabel>Phone:</TextLabel>
-                <TextParagraph>{person.street}</TextParagraph>
-              </View>
-              <View style={Styles.formRow}>
                 <TextLabel>City:</TextLabel>
                 <TextParagraph>{person.city}</TextParagraph>
               </View>
@@ -175,7 +171,6 @@ export default function ViewPersonScreen(props) {
               text="Delete"
               type="default"
               size="small"
-              ButtonStyle={Styles.personListItembttn}
               buttonText={Styles.personListItembttnText}
               onPress={deletePerson}
               />

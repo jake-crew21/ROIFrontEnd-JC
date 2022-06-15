@@ -10,6 +10,7 @@ import Styles from "../styles/MainStyle";
 import HomeScreen from '../screens/HomeScreen';
 import HelpScreen from '../screens/HelpScreen';
 import PeopleNavigator from './PeopleNavigator';
+import AddPersonScreen from '../screens/AddPersonScreen';
 
 
 const BottomTab = createBottomTabNavigator();
@@ -46,8 +47,8 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
-        name="view"
-        component={PeopleNavigator}
+        name="Add"
+        component={AddPersonScreen}
         options={{
           title: 'AddPerson',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-add" />

@@ -24,7 +24,7 @@ export default function ViewPeopleScreen(props) {
 
   function showAddPerson()
   {
-    props.navigation.replace('Root', {screen: 'home'});
+    props.navigation.replace('Root', {screen: 'Add'});
   }
 
   function refreshPersonList()
@@ -58,12 +58,13 @@ export default function ViewPeopleScreen(props) {
       //create an output view for each item
       return (
         <View key={p.personId} style={Styles.personListItem}>
-          
           <Pressable onPress={() => showViewPerson(p)}>
-            <View style={Styles.personListItemDetails}>
-              <TextParagraph style={Styles.personListItemName}>{p.name}</TextParagraph>
-              <TextParagraph style={Styles.personListItemText}>{p.department?.name ?? "---"}</TextParagraph>
-              <TextParagraph style={Styles.personListItemText}>Phone: {p.phone}</TextParagraph>
+            <View style={Styles.personListBttn}>
+              <View style={Styles.personListItemDetails}>
+                <TextParagraph style={Styles.personListItemName}>{p.name}</TextParagraph>
+                <TextParagraph style={Styles.personListItemText}>{p.department?.name ?? "---"}</TextParagraph>
+                <TextParagraph style={Styles.personListItemText}>Phone: {p.phone}</TextParagraph>
+              </View>
             </View>
           </Pressable>
         </View>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, ScrollView, Pressable } from 'react-native';
+import { View, ScrollView, Pressable, Image } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // Import helper code
@@ -12,37 +12,34 @@ import Colours from '../constants/Colours';
 
 export default function HelpScreen(props) {
 
+  function homeScreen() {
+    props.navigation.replace('Root', {screen: 'home'});
+  }
+
   return (
     <SafeAreaView style={Styles.safeAreaView}>
       <ScrollView style={Styles.container} contentContainerStyle={Styles.contentContainer}>
 
         <View>
           
-          <TextH1 style={{marginTop:0}}>Help topics</TextH1>
+          <View style={Styles.logoAndTitle}>
+            <Pressable onPress={homeScreen}>
+              <Image source = {require ('../assets/images/roi-logo.jpg')} style = {Styles.logoSize}/>
+            </Pressable>
+            <TextH1 style={{marginTop:0}}>Help</TextH1>
+          </View>
 
-          <TextH2>Sample content</TextH2>
+          <TextH2>Home Buttons</TextH2>
 
-          <TextParagraph>Here is some sample content for a help topic (or just any set of static text for the screen).</TextParagraph>
+          <TextParagraph>To navigate to the home screen, the home button in the bottom left of the screen at all times. All 'ROI' logos found away from the home screen can also navigate you to the home screen.</TextParagraph>
 
-          <TextH2>Custom components</TextH2>
+          <TextH2>View Person</TextH2>
 
-          <TextParagraph>You can add all of your own content and structure for these screens, making use of the customised text components from components/StyledText.</TextParagraph>
+          <TextParagraph>In View People, click/press on person listing to view their profile</TextParagraph>
 
-          <TextH3>Custom text components:</TextH3>
+          <TextH2>Edit/Delete</TextH2>
 
-          <TextListItem>MonoText - Monospaced font (Space Mono)</TextListItem>
-          <TextListItem>TextH1 - heading 1</TextListItem>
-          <TextListItem>TextH2 - heading 2</TextListItem>
-          <TextListItem>TextH3 - heading 3</TextListItem>
-          <TextListItem>TextParagraph - paragraph</TextListItem>
-          <TextListItem>TextListItem - bullet list item</TextListItem>
-          <TextListItem>TextLabel - form label (inline with input)</TextListItem>
-
-          <TextH2>Wanna go home?</TextH2>
-
-          <Pressable onPress={() => props.navigation.replace('Root')}>
-            <TextParagraph style={{marginVertical: 10, color: Colours.tabLabelSelected}}>Click here to go home...</TextParagraph>
-          </Pressable>
+          <TextParagraph>Edit and Delete can be found on each Person profile. "Edit" can be found near the top left. "Delete" can be found at the bottom of the screen, you may need to scroll depending on your screen size.</TextParagraph>
 
         </View>
       </ScrollView>

@@ -194,7 +194,7 @@ async function handleFetchError(response) {
 export function RoiGetDepartments()
 {
     //call the api end point: GET /Departments
-    return getRequest(`${apiUrl}/Departments`)
+    return getRequest(`${apiUrl}/v1/Departments`)
         .then(response => {
             //If request/response is successful, return json data
             return response
@@ -229,9 +229,9 @@ export function RoiAddPerson(name, phone, departmentId, street, city, state, zip
         })
 }
 //PUT Person
-export function RoiUpdatePerson(id, name, phone, departmentId, street, city, state, zip, country)
+export function RoiUpdatePerson(personId, name, phone, departmentId, street, city, state, zip, country)
 {
-    return putRequest(`${apiUrl}/People/${id}`, {id, name, phone, departmentId, street, city, state, zip, country})
+    return putRequest(`${apiUrl}/People/${personId}`, { personId, name, phone, departmentId, street, city, state, zip, country})
         .then(response => {
             //If request/response is successful, return true
             return true

@@ -11,7 +11,7 @@ export default {
           People: {
             path: 'People',
             screens: {
-              Viewpeople: 'view-all',
+              ViewPeople: 'view-all',
               ViewPerson: 'view',
               EditPerson: 'edit',
             },
