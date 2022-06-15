@@ -64,7 +64,6 @@ export default function AddPersonScreen(props) {
   function addPerson() {
     RoiAddPerson(name, phone, departmentId, street, city, state, zip, country)
       .then(data => {
-        console.log(data)
         showViewPeople()
       })
       .catch(error => {

@@ -64,8 +64,6 @@ export default function EditPersonScreen(props) {
     //GET the personId passed to this screen (via props)
     const personId = props.route.params.personId
 
-    //testing 
-    console.log("load person: " + personId)
     //Get data from the api
     RoiGetPerson(personId)
       //success

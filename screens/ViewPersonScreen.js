@@ -56,8 +56,6 @@ export default function ViewPersonScreen(props) {
     //GET the personId passed to this screen (via props)
     const personId = props.route.params.personId
 
-    //testing 
-    console.log("load person: " + personId)
     //Get data from the api
     RoiGetPerson(personId)
       //success
@@ -105,7 +103,7 @@ export default function ViewPersonScreen(props) {
           
       },
       //Cancel - do nothing
-      () => {console.log("Canceled")}
+      () => {}
     )
   }
   //Main output
