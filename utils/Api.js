@@ -18,7 +18,7 @@ cache.ttlMinutes = 60;
 async function getRequest(url, data = {}, returnsData = true) {
     
     // Build URL with data attached
-    url += new URLSearchParams(data);
+    url += '?' + new URLSearchParams(data);
     
     // Make request, wait for response
     const response = await fetch(url, {
@@ -198,7 +198,7 @@ async function handleFetchError(response) {
 export function RoiGetDepartments()
 {
     //call the api end point: GET /Departments
-    return getRequest(`${apiUrl}/v1/Departments`)
+    return getRequestWithCaching(`${apiUrl}/v1/Departments`)
         .then(response => {
             //If request/response is successful, return json data
             return response
@@ -211,7 +211,7 @@ export function RoiGetDepartments()
 export function RoiGetPeople()
 {
     //call the api end point: GET /People
-    return getRequest(`${apiUrl}/People`)
+    return getRequestWithCaching(`${apiUrl}/People`)
         .then(response => {
             //If request/response is successful, return json data
             return response
@@ -224,7 +224,7 @@ export function RoiGetPeople()
  */
 export function RoiGetPerson(id)
 {
-    return getRequest(`${apiUrl}/People/${id}`)
+    return getRequestWithCaching(`${apiUrl}/People/${id}`)
         .then(response => {
             //If request/response is successful, return json data
             return response

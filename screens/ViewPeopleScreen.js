@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { View, ScrollView, Image, Pressable } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
+import { showMessage } from 'react-native-flash-message';
+import NetInfo from '@react-native-community/netinfo';
 
 // Import helper code
 import { RoiGetPeople } from '../utils/Api';
-import { PopupOk } from '../utils/Popup';
 
 // Import styling and components
 import { TextParagraph, TextH1 } from "../components/StyledText";
@@ -13,7 +14,6 @@ import { MyButton } from '../components/MyButton';
 
 
 export default function ViewPeopleScreen(props) {
-
   //State - data for this component
   const [people, setPeople] = React.useState([])
 
@@ -30,8 +30,13 @@ export default function ViewPeopleScreen(props) {
   /**
    * Gets People data and passes it to [people, setPeople] state
    */
-  function refreshPersonList()
+  async function refreshPersonList()
   {
+    displayConnectionMessage()
+    if (!(await NetInfo.fetch()).isConnected) {
+      return
+    }
+    
     //Get data from the roi
     RoiGetPeople()
       //success
@@ -41,7 +46,15 @@ export default function ViewPeopleScreen(props) {
       })
       //error
       .catch(error => {
-        PopupOk("API Error", "Could not retrive 'people' from server")
+        showMessage({
+          message: `API Error: ${error}`,
+          description: "Could not retrive 'people' from server",
+          type: 'warning',
+          icon: 'auto',
+          floating: true,
+          duration: 4000,
+          position: 'top'
+        })
       })
   }
   /**
@@ -63,6 +76,11 @@ export default function ViewPeopleScreen(props) {
    */
   function displayPeople()
   {
+    //Flash message when no internet
+    displayConnectionMessage()
+    
+    //Cancel if no 'People' to display
+    if (!people)  return
     //loop through the people that are being returned, appropriate output and then return result
     return people.map(p => {
       //create an output view for each item
@@ -80,6 +98,29 @@ export default function ViewPeopleScreen(props) {
         </View>
       )
     })
+  }
+  /**
+   * Displays flash message if there is no internet connection
+   */
+  function displayConnectionMessage() {
+    //Get network conn status
+    NetInfo.fetch()
+      .then (
+        status => {
+          //check if not conn
+          if (!status.isConnected) {
+            //display flash message (imported from r-n-flash-message)
+            showMessage({
+              message: 'No internet connection',
+              description: 'Any data you view may not be current',
+              type: 'warning',
+              icon: 'warning',
+              floating: true,
+              duration: 4000
+            })
+          }
+        }
+      )
   }
 
   return (

@@ -1,15 +1,24 @@
 import * as React from 'react';
-import { View, ScrollView, Image, Pressable } from 'react-native';
+import { View, ScrollView, Image, Pressable, Text } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
+import { showMessage } from 'react-native-flash-message';
+import NetInfo from '@react-native-community/netinfo';
 
 // Import helper code
 import { RoiDeletePerson, RoiGetPerson } from '../utils/Api';
-import { PopupOk, PopupOkCancel } from '../utils/Popup';
+import {
+  MenuContext,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 
 // Import styling and components
 import { TextParagraph, TextH1, TextLabel } from "../components/StyledText";
 import Styles from "../styles/MainStyle";
 import { MyButton } from '../components/MyButton';
+import { styleProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
 
 
 export default function ViewPersonScreen(props) {
@@ -51,8 +60,13 @@ export default function ViewPersonScreen(props) {
   /**
    * Gets the Person data by refering to the personId from the previous screen
    */
-  function refreshPerson()
+  async function refreshPerson()
   {
+    displayConnectionMessage()
+    if (!(await NetInfo.fetch()).isConnected) {
+      return
+    }
+    
     //GET the personId passed to this screen (via props)
     const personId = props.route.params.personId
 
@@ -65,7 +79,17 @@ export default function ViewPersonScreen(props) {
       })
       //error
       .catch(error => {
-        PopupOk("API Error", "Could not retrive person from server")
+        showMessage({
+          message: `API Error: ${error}`,
+          description: "Could not retrive 'person' from server",
+          type: 'warning',
+          icon: 'auto',
+          floating: true,
+          duration: 4000,
+          position: 'top',
+          autoHide: false,
+          onPress: showViewPeople()
+        })
         props.navigation.navigate("ViewPeople")
       })
   }
@@ -79,32 +103,50 @@ export default function ViewPersonScreen(props) {
    * Deletes person selected by personId from the data previously gotten from the API
    * after confirming with user
    */
-  function deletePerson() {
-    //check if person should be deleted (confirm with user)
-    PopupOkCancel(
-      //Tittle
-      "Delete Person?",
-      //message
-      `Are you sure you want to delete ${person.name}?`,
-      //OK - delete the person
-      () => {
-        //Delete the person using the API
-        RoiDeletePerson(person.personId)
-          .then (data => {
-          //show confirmation that person has been deleted
-          PopupOk("Person Deleted", `${person.name} has been deleted.`)
-          //Refresh the person list
-          showViewPeople()
-          })
-          .catch (error => {
-            //display error to user
-            PopupOk("Error", error)
-          })
-          
-      },
-      //Cancel - do nothing
-      () => {}
-    )
+  async function deletePerson() {
+    NetInfo.fetch()
+      .then (
+        status => {
+          if (!status.isConnected) {
+            showMessage({
+              message: 'No internet connect',
+              description: `${person.name} can not be deleted at this time`,
+              type: 'warning',
+              icon: 'auto',
+              floating: true,
+              duration: 4000
+            })
+          } else {
+            //Delete the person using the API
+            RoiDeletePerson(person.personId)
+            //Refresh the person list
+            showViewPeople()
+          }
+        }
+      )
+  }
+  /**
+   * Displays flash message if there is no internet connection
+   */
+   function displayConnectionMessage() {
+    //Get network conn status
+    NetInfo.fetch()
+      .then (
+        status => {
+          //check if not conn
+          if (!status.isConnected) {
+            //display flash message (imported from r-n-flash-message)
+            showMessage({
+              message: 'No internet connection',
+              description: 'Any data you view may not be current',
+              type: 'warning',
+              icon: 'warning',
+              floating: true,
+              duration: 4000
+            })
+          }
+        }
+      )
   }
   //Main output
   return (
@@ -133,55 +175,61 @@ export default function ViewPersonScreen(props) {
         </View>
 
         <ScrollView style={Styles.container} contentContainerStyle={Styles.contentContainer}>  
-          {/* ViewPerson data gotten from the API */}
-          <View style={Styles.form}>
-            {/* Details */}
-            <View style={Styles.fieldSet}>
-              <TextParagraph style={Styles.legend}>Details</TextParagraph>
-              <View style={Styles.formRow}>
-                <TextLabel>ID:</TextLabel>
-                <TextParagraph>{person.personId}</TextParagraph>
+          <Menu>
+            {/* ViewPerson data gotten from the API */}
+            <View style={Styles.form}>
+              {/* Details */}
+              <View style={Styles.fieldSet}>
+                <TextParagraph style={Styles.legend}>Details</TextParagraph>
+                <View style={Styles.formRow}>
+                  <TextLabel>ID:</TextLabel>
+                  <TextParagraph>{person.personId}</TextParagraph>
+                </View>
+                <View style={Styles.formRow}>
+                  <TextLabel>Phone:</TextLabel>
+                  <TextParagraph>{person.phone}</TextParagraph>
+                </View>
+                <View style={Styles.formRow}>
+                  <TextLabel>Department:</TextLabel>
+                  <TextParagraph>{person.department?.name ?? "---"}</TextParagraph>
+                </View>
               </View>
-              <View style={Styles.formRow}>
-                <TextLabel>Phone:</TextLabel>
-                <TextParagraph>{person.phone}</TextParagraph>
+              {/* Address */}
+              <View style={Styles.fieldSet}>
+                <TextParagraph style={Styles.legend}>Address</TextParagraph>
+                <View style={Styles.formRow}>
+                  <TextLabel>City:</TextLabel>
+                  <TextParagraph>{person.city}</TextParagraph>
+                </View>
+                <View style={Styles.formRow}>
+                  <TextLabel>State:</TextLabel>
+                  <TextParagraph>{person.state}</TextParagraph>
+                </View>
+                <View style={Styles.formRow}>
+                  <TextLabel>Zip:</TextLabel>
+                  <TextParagraph>{person.zip}</TextParagraph>
+                </View>
+                <View style={Styles.formRow}>
+                  <TextLabel>Country:</TextLabel>
+                  <TextParagraph>{person.country}</TextParagraph>
+                </View>
               </View>
-              <View style={Styles.formRow}>
-                <TextLabel>Department:</TextLabel>
-                <TextParagraph>{person.department?.name ?? "---"}</TextParagraph>
-              </View>
+              {/* Delete Button */}
             </View>
-            {/* Address */}
-            <View style={Styles.fieldSet}>
-              <TextParagraph style={Styles.legend}>Address</TextParagraph>
-              <View style={Styles.formRow}>
-                <TextLabel>City:</TextLabel>
-                <TextParagraph>{person.city}</TextParagraph>
+            <MenuTrigger>
+              <View>
+                <Text style={Styles.deleteBttn}>Delete</Text>
               </View>
-              <View style={Styles.formRow}>
-                <TextLabel>State:</TextLabel>
-                <TextParagraph>{person.state}</TextParagraph>
-              </View>
-              <View style={Styles.formRow}>
-                <TextLabel>Zip:</TextLabel>
-                <TextParagraph>{person.zip}</TextParagraph>
-              </View>
-              <View style={Styles.formRow}>
-                <TextLabel>Country:</TextLabel>
-                <TextParagraph>{person.country}</TextParagraph>
-              </View>
-            </View>
-            {/* Delete Button */}
-          </View>
-          <View>
-            <MyButton
-            text="Delete"
-            type="default"
-            size="small"
-            buttonText={Styles.personListItembttnText}
-            onPress={deletePerson}
-            />
-          </View>
+            </MenuTrigger>
+              <MenuOptions optionsContainerStyle = {Styles.deleteMenuSty}>
+                <MenuOption onSelect={() => deletePerson()}>
+                  <Text>Confirm</Text>
+                </MenuOption>
+                <MenuOption onSelect={() => console.log("canceled")}>
+                  <Text style={{color: 'red'}}>Cancel</Text>
+                </MenuOption>
+              </MenuOptions>
+          </Menu>
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { View, ScrollView, Image, Pressable, TextInput, Picker } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
+import { showMessage } from "react-native-flash-message";
+import NetInfo from '@react-native-community/netinfo';
 
 // Import helper code
 import { RoiAddPerson, RoiGetDepartments } from '../utils/Api';
@@ -10,6 +12,7 @@ import { PopupOk } from '../utils/Popup';
 import { TextParagraph, TextH1, TextLabel } from "../components/StyledText";
 import Styles from "../styles/MainStyle";
 import { MyButton } from '../components/MyButton';
+import status from 'webpack-dev-server/lib/utils/status';
 
 export default function AddPersonScreen(props) {
 
@@ -61,13 +64,28 @@ export default function AddPersonScreen(props) {
   /**
    * Adds new person to the People Table
    */
-  function addPerson() {
+  async function addPerson() {
+    //check internet connection, if no connection inform user
+    displayConnectionMessage()
+    //stop function from trying to connect to API if no internet connection
+    if (!(await NetInfo.fetch()).isConnected) {
+      return
+    }
+    
     RoiAddPerson(name, phone, departmentId, street, city, state, zip, country)
       .then(data => {
         showViewPeople()
       })
       .catch(error => {
-        PopupOk("Error", error)
+        showMessage({
+          message: 'No internet connection',
+          description: 'No new people can be added,\nuntil you have an active internet connection',
+          type: 'danger',
+          icon: 'auto',
+          floating: true,
+          duration: '4000',
+          autoHide: false
+        })
       })
       
   }
@@ -81,6 +99,30 @@ export default function AddPersonScreen(props) {
         <Picker.Item key={d.departmentId} label={d.name} value={d.departmentId}/>
       )
     })
+  }
+  /**
+   * Displays flash message if there is no internet connection
+   */
+  function displayConnectionMessage() {
+    //Get network conn status
+    NetInfo.fetch()
+      .then (
+        status => {
+          //check if not conn
+          if (!status.isConnected) {
+            //display flash message (imported from r-n-flash-message)
+            showMessage({
+              message: 'No internet connection',
+              description: 'No new people can be added,\nuntil you have an active internet connection',
+              type: 'danger',
+              icon: 'auto',
+              floating: true,
+              duration: '4000',
+              autoHide: false
+            })
+          }
+        }
+      )
   }
   //Main output
   return (

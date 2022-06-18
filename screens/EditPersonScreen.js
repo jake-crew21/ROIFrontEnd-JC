@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { View, ScrollView, Image, Pressable, TextInput, Picker } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
+import {showMessage} from "react-native-flash-message";
+import NetInfo from '@react-native-community/netinfo';
 
 // Import helper code
 import Settings from '../constants/Settings';
@@ -35,8 +37,12 @@ export default function EditPersonScreen(props) {
   /**
    * Gets Departments data and passes it to [departments, setDepartments] state
    */
-  function refreshDepartments()
+  async function refreshDepartments()
   {
+    displayConnectionMessage()
+    if (!(await NetInfo.fetch()).isConnected) {
+      return
+    }
     //Get data from the roi
     RoiGetDepartments()
       //success
@@ -46,7 +52,17 @@ export default function EditPersonScreen(props) {
       })
       //error
       .catch(error => {
-        PopupOk("API Error", "Could not retrive 'departments' from server")
+        showMessage({
+          message: `API Error: ${error}`,
+          description: "Could not retrive 'departments' from server",
+          type: 'warning',
+          icon: 'auto',
+          floating: true,
+          duration: 4000,
+          position: 'top',
+          autoHide: false,
+          onPress: showViewPeople()
+        })
       })
   }
   /**
@@ -84,8 +100,17 @@ export default function EditPersonScreen(props) {
       })
       //error
       .catch(error => {
-        // PopupOk("API Error", "Could not retrive person from server")
-        showViewPeople()
+        showMessage({
+          message: `API Error: ${error}`,
+          description: "Could not retrive 'person' from server",
+          type: 'warning',
+          icon: 'auto',
+          floating: true,
+          duration: 4000,
+          position: 'top',
+          autoHide: false,
+          onPress: showViewPeople()
+        })
       })
   }
   /**
@@ -104,12 +129,23 @@ export default function EditPersonScreen(props) {
    * Updates the person data with the personId as verification
    */
   function savePerson() {
+    
     RoiUpdatePerson(personId, name, phone, departmentId, street, city, state, zip, country)
       .then(data => {
         showViewPeople()
       })
       .catch(error => {
-        PopupOk("Error", error)
+        showMessage({
+          message: `API Error: ${error}`,
+          description: "No edits can be saved while offline,\ntry again when you are connected to the internet",
+          type: 'danger',
+          icon: 'auto',
+          floating: true,
+          duration: 4000,
+          position: 'top',
+          autoHide: false,
+          onPress: showViewPeople()
+        })
       })
   }
   /**
@@ -122,6 +158,30 @@ export default function EditPersonScreen(props) {
         <Picker.Item key={d.departmentId} label={d.name} value={d.departmentId}/>
       )
     })
+  }
+  /**
+   * Displays flash message if there is no internet connection
+   */
+   function displayConnectionMessage() {
+    //Get network conn status
+    NetInfo.fetch()
+      .then (
+        status => {
+          //check if not conn
+          if (!status.isConnected) {
+            //display flash message (imported from r-n-flash-message)
+            showMessage({
+              message: 'No internet connection',
+              description: 'No edits can be saved,\nuntil you have an active internet connection',
+              type: 'danger',
+              icon: 'auto',
+              floating: true,
+              duration: '4000',
+              autoHide: false
+            })
+          }
+        }
+      )
   }
   //Main output
   return (

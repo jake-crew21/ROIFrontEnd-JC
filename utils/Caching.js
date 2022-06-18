@@ -37,7 +37,7 @@ class AsyncCache
     cachePrefix = 'cache-';
     
     /** The TTL (time to live) value in minutes for all cached items. */
-    ttlMinutes = 5;
+    ttlMinutes = 1440;
 
 
     /**

@@ -15,7 +15,6 @@ export default StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: Colours.roiWhite,
     },
     contentContainer: {
         padding: 10,
@@ -226,6 +225,20 @@ export default StyleSheet.create({
     // HELP SCREEN
 
     // View People Screen
+    deleteBttn: {
+        padding: 10,
+        textAlign: 'center',
+        backgroundColor: Colours.roiGrey,
+        fontSize: 18
+    },
+    deleteMenuSty: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 15,
+        marginHorizontal: `${(Dimensions.get('screen').width)/4}px`,
+        marginVertical: -50,
+        backgroundColor: Colours.roiWhite,
+    },
     peopleButtonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -235,7 +248,8 @@ export default StyleSheet.create({
         borderBottomColor: Colours.roiCharcoal,
     },
     personList: {
-
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     personListItem: {
         flexDirection: 'row',
